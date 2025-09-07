@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 // import 'package:provider/provider.dart'; // <- puedes quitarlo por ahora
 import 'screens/home.dart';
 import 'screens/login.dart';
-import 'screens/candidate_dashboard.dart';
-import 'screens/company_dashboard.dart';
-import 'screens/vacancy_list.dart';
-import 'screens/vacancy_detail.dart';
+import 'screens/panel_candidato.dart';
+import 'screens/panel_empresa.dart';
+import 'screens/lista_vacantes.dart';
+import 'screens/detalle_vacante.dart';
 
 void main() {
   runApp(const ConectaChiapasApp());

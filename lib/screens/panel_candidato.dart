@@ -13,7 +13,7 @@ class CandidateDashboard extends StatelessWidget {
         itemCount: 8,
         itemBuilder: (_, i) => VacancyCard(
           title: 'Desarrollador Flutter Jr. #$i',
-          company: 'PYLP Panter y La People S.A. de C.V.',
+          company: 'Chiapanet.',
           location: 'Tapachula, Chiapas',
           salary: '\$12,000 - \$16,000 MXN',
           onTap: () => Navigator.pushNamed(context, '/vacancy'),

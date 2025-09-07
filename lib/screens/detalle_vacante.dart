@@ -17,8 +17,7 @@ class VacancyDetailScreen extends StatelessWidget {
               style: Theme.of(context).textTheme.headlineSmall,
             ),
             const SizedBox(height: 8),
-            const Text(
-                'PYLP Panter y La People S.A. de C.V. • Tapachula, Chiapas'),
+            const Text('Chiapanet'),
             const SizedBox(height: 16),
             const Text(
               '''Descripción:
