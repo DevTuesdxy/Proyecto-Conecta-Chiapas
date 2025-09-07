@@ -10,7 +10,7 @@ class VacancyListScreen extends StatelessWidget {
       appBar: AppBar(title: const Text('Vacantes')),
       body: ListView.builder(
         padding: const EdgeInsets.all(16),
-        itemCount: 20,
+        itemCount: 1,
         itemBuilder: (_, i) => VacancyCard(
           title: 'Backend FastAPI #$i',
           company: 'Empresa #$i',

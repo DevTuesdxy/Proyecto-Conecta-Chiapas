@@ -82,7 +82,9 @@ class _NewVacancyDialogState extends State<_NewVacancyDialog> {
         ),
       ),
       actions: [
-        TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancelar')),
+        TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancelar')),
         FilledButton(
           onPressed: () {
             if (_formKey.currentState!.validate()) {
