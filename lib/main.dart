@@ -21,7 +21,7 @@ class ConectaChiapasApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         useMaterial3: true,
-        colorSchemeSeed: Colors.teal,
+        colorSchemeSeed: const Color.fromARGB(255, 0, 169, 80),
         inputDecorationTheme: const InputDecorationTheme(
           border: OutlineInputBorder(),
         ),

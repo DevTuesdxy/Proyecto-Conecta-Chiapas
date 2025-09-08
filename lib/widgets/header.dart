@@ -11,7 +11,11 @@ class Header extends StatelessWidget {
         children: [
           const _Logo(),
           const SizedBox(width: 12),
-          Text('Conecta Chiapas', style: Theme.of(context).textTheme.titleLarge),
+          Text('Conecta Chiapas',
+              style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: const Color(0xFF000000),
+                  )),
           const Spacer(),
           TextButton(
             onPressed: () => Navigator.pushNamed(context, '/login'),
@@ -37,7 +41,7 @@ class _Logo extends StatelessWidget {
       height: 36,
       width: 36,
       decoration: BoxDecoration(
-        color: Colors.teal.shade100,
+        color: const Color.fromARGB(255, 0, 168, 92),
         borderRadius: BorderRadius.circular(8),
       ),
       child: const Icon(Icons.work_outline),

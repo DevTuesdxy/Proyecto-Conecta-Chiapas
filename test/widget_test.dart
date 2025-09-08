@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:conecta_chiapas/screens/vacancy_detail.dart';
+import 'package:conecta_chiapas/screens/detalle_vacante.dart';
 
 void main() {
   testWidgets('VacancyDetailScreen muestra título y permite postularse',

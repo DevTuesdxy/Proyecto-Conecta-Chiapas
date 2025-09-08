@@ -12,7 +12,7 @@ class Footer extends StatelessWidget {
           const Divider(),
           const SizedBox(height: 12),
           Text(
-            '© 2025 Conecta Chiapas — Hecho con Flutter',
+            '© 2025 Conecta con el talento de Chiapas — Hecho con Flutter',
             style: Theme.of(context).textTheme.bodySmall,
             textAlign: TextAlign.center,
           ),
