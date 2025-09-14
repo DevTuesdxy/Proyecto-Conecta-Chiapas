@@ -45,7 +45,7 @@ class HeroSection extends StatelessWidget {
             ),
             children: [
               TextSpan(
-                text: 'Chiapas',
+                text: 'la Frontera Sur',
                 style: textTheme.headlineLarge?.copyWith(
                   color: const Color(0xFF00A950), // #00A950
                   height: 1.05,

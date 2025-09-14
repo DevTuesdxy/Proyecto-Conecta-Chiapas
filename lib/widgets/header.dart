@@ -38,10 +38,10 @@ class _Logo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 36,
-      width: 36,
+      height: 40,
+      width: 40,
       decoration: BoxDecoration(
-        color: const Color.fromARGB(255, 0, 168, 92),
+        color: const Color.fromARGB(255, 0, 169, 80),
         borderRadius: BorderRadius.circular(8),
       ),
       child: const Icon(Icons.work_outline),
