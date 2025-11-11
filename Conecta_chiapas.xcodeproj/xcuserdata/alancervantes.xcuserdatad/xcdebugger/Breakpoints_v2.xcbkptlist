@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   uuid = "C64B2498-81F3-4C31-848C-FD23EB97B7C6"
+   type = "1"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "4403AD8F-2CEA-43FD-94D8-6569486A45BF"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../../var/folders/sn/zxsjjhzs34q9_3s2kwzmq5880000gn/T/swift-generated-sources/@__swiftmacro_15Conecta_chiapas0030FormularioComponentswift_eDAEifMX232_0_33_EF08AB41CA7CD8D57BB5A3F7B8B6770ELl7PreviewfMf_.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1"
+            endingLineNumber = "1"
+            landmarkName = "$s15Conecta_chiapas0030FormularioComponentswift_eDAEifMX232_0_33_EF08AB41CA7CD8D57BB5A3F7B8B6770ELl7PreviewfMf_15PreviewRegistryfMu_"
+            landmarkType = "37">
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>
