@@ -13,7 +13,6 @@ struct MenuView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            // Branding superior
             HStack(spacing: 12) {
                 ZStack {
                     Circle().fill(Color(.systemGreen)).frame(width: 36, height: 36)
@@ -40,7 +39,6 @@ struct MenuView: View {
             Divider()
 
             TabView(selection: $selectedTab) {
-                // Dashboard
                 NavigationStack {
                     ScrollView {
                         VStack(spacing: 16) {
@@ -66,14 +64,12 @@ struct MenuView: View {
                 }
                 .tag(Tab.dashboard)
 
-                // Empleos
                 NavigationStack {
                     ScrollView {
                         VStack(alignment: .leading, spacing: 24) {
                             Text("Dashboard de Empresa")
                                 .font(.title2).bold()
 
-                            // KPIs
                             HStack(spacing: 16) {
                                 StatCard(title: "Empleos activos", value: "8", systemImage: "briefcase.fill")
                                 StatCard(title: "Aplicaciones", value: "156", systemImage: "doc.plaintext")
@@ -85,7 +81,6 @@ struct MenuView: View {
 
                             Divider()
 
-                            // Aplicaciones recientes
                             Text("Aplicaciones recientes")
                                 .font(.headline)
 
@@ -96,7 +91,6 @@ struct MenuView: View {
                                     location: "San Cristóbal de las Casas",
                                     skills: ["React", "JavaScript"]
                                 )
-                                // Puedes agregar más CandidateCard aquí
                             }
                         }
                         .padding()
@@ -181,6 +175,7 @@ struct MenuView: View {
             }
             .tint(Color(.systemGreen))
         }
+        .navigationBarBackButtonHidden(true)
     }
 }
 
@@ -208,7 +203,6 @@ struct StatCard: View {
     }
 }
 
-// Componente de tarjeta de candidato
 struct CandidateCard: View {
     let name: String
     let role: String
@@ -216,7 +210,7 @@ struct CandidateCard: View {
     let skills: [String]
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 6) {
+        VStack(alignment: .center, spacing: 6) {
             Text(name).font(.headline)
             Text(role).font(.subheadline).foregroundStyle(.secondary)
             Text(location).font(.caption).foregroundStyle(.secondary)

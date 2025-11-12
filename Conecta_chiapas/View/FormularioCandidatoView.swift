@@ -16,11 +16,16 @@ struct FormularioCandidatoView: View {
     @State private var curp = ""
     @State private var fechaNacimiento = Date()
     
+    @State private var navegarAlMenu: Bool = false
+    
     private var formularioValido: Bool {
         !nombreUsuario.isEmpty &&
         !apellidoUsuario.isEmpty &&
         emailUsuario.contains("@") &&
-        contrasenaUsuario.count >= 6
+        contrasenaUsuario.count >= 6 &&
+        !ubicacionUsuario.isEmpty &&
+        !curp.isEmpty &&
+        !nacionalidad.isEmpty
     }
     
     private func registrarCandidato() {
@@ -41,13 +46,14 @@ struct FormularioCandidatoView: View {
             curp: curp.isEmpty ? nil : curp, nacionalidad: nacionalidad.isEmpty ? "Mexicana" : nacionalidad,
             fechaNacimiento: fechaNacimiento
         )
-        
+         
         usuario.candidato = perfil
         context.insert(usuario)
         
         do {
             try context.save()
             print("✅ Candidato registrado correctamente")
+            navegarAlMenu = true
         } catch {
             print("💥 Error al guardar candidato: \(error)")
         }
@@ -75,7 +81,7 @@ struct FormularioCandidatoView: View {
                     nacionalidad: $nacionalidad,
                     fechaNacimiento: $fechaNacimiento
                 )
-
+                
                 Button("Registrar Candidato") {
                     registrarCandidato()
                 }
@@ -84,8 +90,14 @@ struct FormularioCandidatoView: View {
                 .disabled(!formularioValido)
                 .padding(.horizontal)
                 .padding(.bottom)
+                
+                NavigationLink(destination: MenuView(), isActive: $navegarAlMenu) {
+                    EmptyView()
+                }
+                .hidden()
             }
             .navigationTitle("Registro de Candidato")
+            .navigationBarBackButtonHidden(true)
         }
     }
 }
