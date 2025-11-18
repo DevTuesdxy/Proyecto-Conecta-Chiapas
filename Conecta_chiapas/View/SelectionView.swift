@@ -40,7 +40,6 @@ private extension Color {
     }
 }
 
-// MARK: - Reusable Models
 struct BenefitItem: Identifiable, Hashable, Equatable {
     let id: UUID
     let systemIcon: String
@@ -123,10 +122,8 @@ struct OnboardingRoleCard: View {
                 }
             }
             
-            // Lista de beneficios con íconos
             benefitsSection
             
-            // Métrica / estadística (opcional)
             if let statLabel, let statValue {
                 VStack(spacing: 2) {
                     Text(statLabel)
@@ -139,7 +136,6 @@ struct OnboardingRoleCard: View {
                 .padding(.top, 4)
             }
             
-            // Botones (opcional)
             ctaSection
         }
         .padding(20)
@@ -226,7 +222,8 @@ struct SelectionView: View {
         case login
     }
     
-    @State private var goToLogin: Bool = false
+    @State private var goToLoginCandidato: Bool = false
+    @State private var goToLoginEmpresa: Bool = false
     @State private var goToFormularioCandidato: Bool = false
     @State private var goToFormularioEmpresa: Bool = false
 
@@ -261,11 +258,10 @@ struct SelectionView: View {
                             statValue: nil,
                             ctas: [
                                 CTAButton(title: "Crear mi perfil", style: .prominent, action: { navigateToFormularioCandidato() }),
-                                CTAButton(title: "Ya tengo cuenta", style: .bordered, action: { navigateToLogin() })
+                                CTAButton(title: "Ya tengo cuenta", style: .bordered, action: { navigateToLoginCandidato() })
                             ]
                         )
                         
-                        // Card 2: Busco talento (empresas)
                         OnboardingRoleCard(
                             title: "Busco talento",
                             subtitle: "Encuentra y conecta con el mejor talento profesional de Chiapas.",
@@ -280,7 +276,7 @@ struct SelectionView: View {
                             statValue: "25,643+",
                             ctas: [
                                 CTAButton(title: "Crear cuenta empresa", style: .prominent, action: {navigateToFormularioEmpresa() }),
-                                CTAButton(title: "Ya tengo cuenta", style: .bordered, action: { navigateToLogin() })
+                                CTAButton(title: "Ya tengo cuenta", style: .bordered, action: { navigateToLoginEmpresa() })
                             ]
                         )
                     }
@@ -291,7 +287,10 @@ struct SelectionView: View {
                 .padding(.vertical, 12)
                 .background(Color(.systemGroupedBackground))
             }
-            .navigationDestination(isPresented: $goToLogin) {
+            .navigationDestination(isPresented: $goToLoginCandidato) {
+                LoginCandidatoView()
+            }
+            .navigationDestination(isPresented: $goToLoginEmpresa){
                 LoginView()
             }
             .navigationDestination(isPresented: $goToFormularioCandidato) {
@@ -303,20 +302,23 @@ struct SelectionView: View {
         }
     }
     
-    private func navigateToLogin() {
-        goToLogin = true
+    private func navigateToLoginCandidato() {
+        goToLoginCandidato = true
+    }
+
+    private func navigateToLoginEmpresa() {
+        goToLoginEmpresa = true
     }
 
     private func navigateToFormularioCandidato() {
         goToFormularioCandidato = true
     }
-    
+
     private func navigateToFormularioEmpresa() {
         goToFormularioEmpresa = true
     }
 }
 
-// MARK: - Preview
 #Preview {
     SelectionView()
 }

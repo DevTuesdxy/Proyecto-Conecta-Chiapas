@@ -73,9 +73,9 @@ struct ContentView: View {
                                 .opacity(selection == 0 ? 0.4 : 1.0)
                             }
                             .disabled(selection == 0)
-
+                            
                             Spacer()
-
+                            
                             Button(action: {
                                 withAnimation {
                                     if selection < 3 {

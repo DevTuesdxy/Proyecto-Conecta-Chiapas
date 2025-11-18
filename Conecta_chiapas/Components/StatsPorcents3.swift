@@ -13,10 +13,6 @@ struct StatsPorcents3: View {
     let Porcentaje: String
     
     var body: some View {
-        
-        
-
-            
             HStack {
                 
                 Text(TituloContenedor)
@@ -31,9 +27,6 @@ struct StatsPorcents3: View {
             }
             .padding(10)                          // un pelín menos padding también ayuda a compactar
             .background(
-                
-                    
-                    
                     RoundedRectangle(cornerRadius: 12, style: .continuous)
                         .foregroundStyle(.colorAzulLight)
                 

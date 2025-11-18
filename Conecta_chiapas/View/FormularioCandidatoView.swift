@@ -3,7 +3,8 @@ import SwiftData
 
 struct FormularioCandidatoView: View {
     @Environment(\.modelContext) private var context
-    
+    @Environment(SessionManager.self) var session
+
     @State private var nombreUsuario = ""
     @State private var apellidoUsuario = ""
     @State private var emailUsuario = ""
@@ -11,20 +12,25 @@ struct FormularioCandidatoView: View {
     @State private var contrasenaUsuario = ""
     @State private var ubicacionUsuario = ""
     
-    // Campos adicionales
     @State private var nacionalidad = ""
     @State private var curp = ""
     @State private var fechaNacimiento = Date()
     
+    @State private var navegarAlMenu: Bool = false
+    
     private var formularioValido: Bool {
         !nombreUsuario.isEmpty &&
         !apellidoUsuario.isEmpty &&
-        emailUsuario.contains("@") &&
-        contrasenaUsuario.count >= 6
+        isValidEmail(emailUsuario) &&
+        contrasenaUsuario.count >= 6 &&
+        !ubicacionUsuario.isEmpty &&
+        isValidCurp(curp) &&
+        !nacionalidad.isEmpty
     }
     
     private func registrarCandidato() {
         let id = Int.random(in: 1000...9999)
+
         let usuario = Usuario(
             idUsuario: id,
             nombre: "\(nombreUsuario) \(apellidoUsuario)",
@@ -38,18 +44,25 @@ struct FormularioCandidatoView: View {
             usuario: usuario,
             nombre: nombreUsuario,
             apPaterno: apellidoUsuario,
-            curp: curp.isEmpty ? nil : curp, nacionalidad: nacionalidad.isEmpty ? "Mexicana" : nacionalidad,
+            curp: curp,
+            nacionalidad: nacionalidad.isEmpty ? "Mexicana" : nacionalidad,
             fechaNacimiento: fechaNacimiento
         )
-        
+         
         usuario.candidato = perfil
         context.insert(usuario)
         
         do {
             try context.save()
-            print("✅ Candidato registrado correctamente")
+            session.guardarSesion(usuario)
+            print("Candidato registrado correctamente")
+
+            session.usuarioActual = usuario
+            print("SessionManager tipo usuario:", session.usuarioActual?.tipo?.rawValue ?? "nil")
+
+            navegarAlMenu = true
         } catch {
-            print("💥 Error al guardar candidato: \(error)")
+            print("Error al guardar candidato: \(error)")
         }
     }
     
@@ -75,7 +88,7 @@ struct FormularioCandidatoView: View {
                     nacionalidad: $nacionalidad,
                     fechaNacimiento: $fechaNacimiento
                 )
-
+                
                 Button("Registrar Candidato") {
                     registrarCandidato()
                 }
@@ -84,8 +97,15 @@ struct FormularioCandidatoView: View {
                 .disabled(!formularioValido)
                 .padding(.horizontal)
                 .padding(.bottom)
+                
+                NavigationLink(destination: MenuView(),
+                               isActive: $navegarAlMenu) {
+                    EmptyView()
+                }
+                .hidden()
             }
             .navigationTitle("Registro de Candidato")
+            .navigationBarBackButtonHidden(true)
         }
     }
 }
@@ -93,8 +113,11 @@ struct FormularioCandidatoView: View {
 #Preview {
     do {
         let container = try ModelContainer.makeMercadoLaboralContainer(inMemory: true)
+        let sessionManager = SessionManager()
+        
         return FormularioCandidatoView()
             .modelContainer(container)
+            .environment(sessionManager)
     } catch {
         fatalError("Error al crear contenedor de SwiftData: \(error)")
     }

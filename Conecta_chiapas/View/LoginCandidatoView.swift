@@ -1,25 +1,24 @@
 //
-//  LoginView.swift
+//  LoginCandidatoView.swift
 //  Conecta_chiapas
 //
-//  Created by Martín Emmanuel Erants Solórzano on 22/10/25.
+//  Created by Alan Cervantes on 17/11/25.
 //
 
 import SwiftUI
 import SwiftData
 
-
-struct LoginView: View {
+struct LoginCandidatoView: View {
     @Environment(SessionManager.self) var session
     @Environment(\.modelContext) private var context
-    @Query var usuarios: [Usuario]
-    
+
+    @Query private var usuarios: [Usuario]
+
     @State private var email: String = ""
     @State private var password: String = ""
     @State private var isPasswordVisible: Bool = false
     @State private var loginError: String?
     @State private var navegarAlMenu: Bool = false
-
     
     var body: some View {
         NavigationStack {
@@ -61,7 +60,7 @@ struct LoginView: View {
                                 Text("Iniciar Sesión")
                                     .font(.title2).bold()
                                     .foregroundStyle(.primary)
-                                Text("Accede a tu cuenta de empresa")
+                                Text("Accede a tu cuenta de candidato")
                                     .font(.subheadline)
                                     .foregroundStyle(.secondary)
                             }
@@ -82,7 +81,7 @@ struct LoginView: View {
                                 .background(RoundedRectangle(cornerRadius: 12).fill(Color(.systemGray6)))
                             }
 
-                           VStack(alignment: .leading, spacing: 8) {
+                            VStack(alignment: .leading, spacing: 8) {
                                 Text("Contraseña")
                                     .font(.subheadline).bold()
                                     .foregroundStyle(.primary)
@@ -103,7 +102,7 @@ struct LoginView: View {
                                 .background(RoundedRectangle(cornerRadius: 12).fill(Color(.systemGray6)))
                             }
 
-                            Button(action: iniciarSesion) {
+                            Button(action: iniciarSesionCandidato) {
                                 Text("Iniciar Sesión")
                                     .font(.headline)
                                     .frame(maxWidth: .infinity)
@@ -117,13 +116,14 @@ struct LoginView: View {
                             .foregroundStyle(.white)
                             .shadow(color: Color(.systemGreen).opacity(0.25), radius: 6, y: 2)
                             
-                            if let loginError{
+                            if let loginError {
                                 Text(loginError)
                                     .font(.caption)
                                     .foregroundColor(.red)
                             }
 
-                            NavigationLink(destination: MenuView(), isActive: $navegarAlMenu){
+                            NavigationLink(destination: MenuView(),
+                                           isActive: $navegarAlMenu) {
                                 EmptyView()
                             }
                             .hidden()
@@ -171,17 +171,17 @@ struct LoginView: View {
             }
         }
     }
-    
-    private func iniciarSesion() {
+        
+    private func iniciarSesionCandidato() {
         let correo = email.lowercased().trimmingCharacters(in: .whitespaces)
         
         guard let usuario = usuarios.first(where: { $0.correo == correo }) else {
-            loginError = "No existe una cuenta con este email."
+            loginError = "No existe una cuenta de candidato con este email."
             return
         }
         
-        guard usuario.tipo == .empresa else {
-            loginError = "Este usuario no es una empresa."
+        guard usuario.tipo == .candidato else {
+            loginError = "Este usuario no es candidato. Usa el acceso de empresa."
             return
         }
 
@@ -191,16 +191,12 @@ struct LoginView: View {
         }
 
         session.guardarSesion(usuario)
-        
         loginError = nil
         navegarAlMenu = true
     }
 }
 
 
-
-
-
-#Preview {
-    LoginView()
-}
+//#Preview {
+//    LoginCandidatoView()
+//}
