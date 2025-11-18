@@ -59,7 +59,7 @@ struct FormularioComponet: View {
             
             ComboboxViewLabeledInput(label: ubicacion, placeholder: "Selecciona tu municipio", text: $tuUbicacion, options: municipios)
                 .listRowSeparator(.hidden)
-            LabeledInput(label: "CURP", placeholder: "C", text: $curp)
+            LabeledInput(label: "CURP", placeholder: "CECA020112HMCRRL3", text: $curp)
             LabeledInput(label: "Nacionalidad", placeholder: "Mexicana", text: $nacionalidad)
                 .listRowSeparator(.hidden)
             DatePicker("Fecha de nacimiento", selection: $fechaNacimiento, displayedComponents: .date)

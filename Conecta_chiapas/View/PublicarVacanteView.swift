@@ -13,7 +13,7 @@ struct PublicarVacanteView: View {
     @Environment(\.dismiss) private var dismiss
     
     @State private var puesto: String = ""
-    @State private var ubicacion: String = "" // Estado para la ubicación
+    @State private var ubicacion: String = ""
     @State private var tipoEmpleo: String = "Tiempo Completo"
     @State private var departamento: String = ""
     @State private var salario: String = ""
@@ -26,7 +26,6 @@ struct PublicarVacanteView: View {
     let periodosSalario = ["Mensual", "Semanal", "Anual"]
     let ubicacionesChiapas = ["Selecciona una ubicación", "Tuxtla Gutiérrez", "Tapachula", "San Cristóbal de las Casas", "Comitán de Domínguez", "Chiapas sin especificar"]
     
-    // MARK: - Validación
     private var formularioValido: Bool {
         !puesto.isEmpty &&
         !ubicacion.isEmpty && ubicacion != ubicacionesChiapas.first! &&
@@ -34,7 +33,6 @@ struct PublicarVacanteView: View {
         !requisitos.isEmpty
     }
     
-    // MARK: - UI
     var body: some View {
         NavigationStack {
             ScrollView {
@@ -177,7 +175,6 @@ struct PublicarVacanteView: View {
         }
     }
     
-    // MARK: - Guardar en SwiftData
     private func publicarVacante() {
         let nuevaVacante = Vacante(
             idVacante: Int.random(in: 1000...9999),
@@ -200,7 +197,6 @@ struct PublicarVacanteView: View {
         }
     }
     
-    // MARK: - Componentes de Estilo
     
     @ViewBuilder
     private func fieldLabel(_ text: String, isRequired: Bool) -> some View {
@@ -231,6 +227,10 @@ struct PublicarVacanteView: View {
 }
 
 #Preview {
+    PublicarVacanteView_Preview()
+}
+
+private func PublicarVacanteView_Preview() -> some View {
     do {
         let container = try ModelContainer.makeMercadoLaboralContainer(inMemory: true)
         
@@ -238,6 +238,7 @@ struct PublicarVacanteView: View {
             idUsuario: 1,
             correo: "empresa@chiapas.com",
             nombre: "Empresa Chiapas S.A.",
+            contrasenia: "123456",
             idEmpresa: 101,
             nombreEmpresa: "Empresa Chiapas S.A."
         )
@@ -245,10 +246,15 @@ struct PublicarVacanteView: View {
         container.mainContext.insert(usuario)
         let empresaPerfil = usuario.empresa!
         
-        return PublicarVacanteView(empresa: empresaPerfil)
-            .modelContainer(container)
-        
+        return AnyView(
+            PublicarVacanteView(empresa: empresaPerfil)
+                .modelContainer(container)
+        )
+
     } catch {
-        return Text("Error al crear el contenedor de vista previa: \(error.localizedDescription)")
+        return AnyView(
+            Text("Error al crear contenedor: \(error.localizedDescription)")
+        )
     }
 }
+

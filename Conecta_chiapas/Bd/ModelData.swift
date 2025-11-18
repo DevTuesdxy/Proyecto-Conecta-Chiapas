@@ -301,15 +301,40 @@ extension Usuario {
     static func comoEmpresa(idUsuario: Int,
                             correo: String,
                             nombre: String,
+                            contrasenia: String,
                             idEmpresa: Int? = nil,
                             nombreEmpresa: String? = nil) -> Usuario {
         let u = Usuario(idUsuario: idUsuario,
                         nombre: nombre,
                         correo: correo,
-                        contrasenia: "hash",
+                        contrasenia: contrasenia,
                         tipo: .empresa)
         let perfil = EmpresaPerfil(idEmpresa: idEmpresa, usuario: u, nombreEmpresa: nombreEmpresa ?? nombre)
         u.empresa = perfil
         return u
     }
 }
+
+extension CandidatoPerfil {
+    func postularA(vacante: Vacante,
+                   descripcion: String? = nil,
+                   context: ModelContext) throws{
+        if vacante.postulaciones.contains(where: {$0.candidato === self}){
+            return
+        }
+        
+        let nuevoId = Int.random(in: 10_000...99_999)
+            
+        let postulacion = DetalleVacantePostulacion(
+                    idDetallePostulacion: nuevoId,
+                    vacante: vacante,
+                    candidato: self,
+                    descripcionPostulacion: descripcion
+                )
+        
+        context.insert(postulacion)
+        try context.save()
+    }
+}
+
+

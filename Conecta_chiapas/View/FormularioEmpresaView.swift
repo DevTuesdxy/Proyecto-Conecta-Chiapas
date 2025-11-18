@@ -3,7 +3,6 @@
 //  Conecta_chiapas
 //
 
-//
 
 import SwiftUI
 import SwiftData
@@ -11,28 +10,43 @@ import SwiftData
 struct FormularioEmpresaView: View {
     @Environment(\.modelContext) private var context
     @Environment(\.dismiss) private var dismiss
+    @Environment(SessionManager.self) var session
     
     // MARK: - Campos
     @State private var nombreEmpresa = ""
     @State private var contacto = ""
     @State private var emailEmpresa = ""
     @State private var telefonoEmpresa = ""
-    @State private var ubicacion = ""
     @State private var sector = ""
     @State private var tamano = ""
     @State private var descripcion = ""
     @State private var contrasenaEmpresa = ""
+    @State private var ubicacion = "Tuxtla Gutiérrez"
    
     @State private var navegarAlMenu: Bool = false
     
-    // MARK: - Validación
     private var formularioValido: Bool {
         !nombreEmpresa.isEmpty &&
-        emailEmpresa.contains("@") &&
-        contrasenaEmpresa.count >= 6 
+        isValidEmail(emailEmpresa) &&
+        contrasenaEmpresa.count >= 6 &&
+        !telefonoEmpresa.isEmpty &&
+        telefonoEmpresa.count >= 10 &&
+        !ubicacion.isEmpty &&
+        !sector.isEmpty &&
+        !tamano.isEmpty &&
+        !descripcion.isEmpty
     }
     
-    // MARK: - Registro
+    let municipios: [String] = [
+        "Tuxtla Gutiérrez",
+        "San Cristóbal de las Casas",
+        "Tapachula",
+        "Comitán",
+        "Palenque",
+        "Arriaga",
+        "Tonalá"
+    ]
+    
     private func registrarEmpresa() {
         let id = Int.random(in: 1000...9999)
         
@@ -40,10 +54,12 @@ struct FormularioEmpresaView: View {
             idUsuario: id,
             correo: emailEmpresa.lowercased(),
             nombre: nombreEmpresa,
+            contrasenia: contrasenaEmpresa,
             idEmpresa: nil,
             nombreEmpresa: nombreEmpresa
         )
         
+        usuario.telefono = telefonoEmpresa
         usuario.empresa?.razonSocial = "\(nombreEmpresa) S.A. de C.V."
         usuario.empresa?.sectorComercial = sector.isEmpty ? "General" : sector
         usuario.empresa?.direccion = ubicacion
@@ -53,7 +69,10 @@ struct FormularioEmpresaView: View {
         
         do {
             try context.save()
-            print("✅ Empresa registrada correctamente")
+            session.guardarSesion(usuario)
+            let fetch = FetchDescriptor<EmpresaPerfil>()
+            let empresas = try? context.fetch(fetch)
+            print("✅ Empresa registrada correctamente. Total empresas: \(empresas?.count ?? 0)")
             navegarAlMenu = true
         } catch {
             print("💥 Error al guardar empresa: \(error)")
@@ -83,14 +102,31 @@ struct FormularioEmpresaView: View {
                             CustomInput(label: "Nombre de Contacto", placeholder: "Nombre de la persona de contacto", text: $contacto)
                             CustomInput(label: "Email", placeholder: "contacto@empresa.com", text: $emailEmpresa, keyboardType: .emailAddress)
                             CustomInput(label: "Teléfono", placeholder: "961 123 4567", text: $telefonoEmpresa, keyboardType: .phonePad)
-                            CustomInput(label: "Ubicación", placeholder: "Selecciona el municipio", text: $ubicacion)
+
+                            VStack(alignment: .leading, spacing: 6){
+                                Text("Ubicación")
+                                    .font(.subheadline)
+                                    .foregroundStyle(Color(.colorGray900))
+                                
+                                Picker("Selecciona el municipio", selection: $ubicacion){
+                                    ForEach(municipios, id: \.self){
+                                        municipio in
+                                        Text(municipio).tag(municipio)
+                                    }
+                                }
+                                .pickerStyle(.menu)
+                                .padding(.horizontal)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .background(Color(.systemGray6))
+                                .cornerRadius(10)
+                            }
                             CustomInput(label: "Sector", placeholder: "Selecciona el sector", text: $sector)
                             CustomInput(label: "Tamaño de Empresa", placeholder: "Selecciona el tamaño", text: $tamano)
                             
                             VStack(alignment: .leading, spacing: 6) {
                                 Text("Descripción de la Empresa")
                                     .font(.subheadline)
-                                    .foregroundColor(.colorGray900) // 👈 aquí
+                                    .foregroundColor(.colorGray900)
                                 TextField("Describe brevemente tu empresa y lo que hacen...", text: $descripcion, axis: .vertical)
                                     .lineLimit(3, reservesSpace: true)
                                     .padding()
@@ -101,7 +137,7 @@ struct FormularioEmpresaView: View {
                             VStack(alignment: .leading, spacing: 6) {
                                 Text("Contraseña")
                                     .font(.subheadline)
-                                    .foregroundColor(.colorGray900) // 👈 aquí
+                                    .foregroundColor(.colorGray900)
                                 SecureField("Mínimo 6 caracteres", text: $contrasenaEmpresa)
                                     .padding()
                                     .background(Color(.systemGray6))
@@ -180,10 +216,12 @@ struct CustomInput: View {
 #Preview {
     do {
         let container = try ModelContainer.makeMercadoLaboralContainer(inMemory: true)
+        let sessionManager = SessionManager()
+        
         return FormularioEmpresaView()
             .modelContainer(container)
+            .environment(sessionManager)
     } catch {
         fatalError("Error al crear contenedor SwiftData: \(error)")
     }
 }
-
