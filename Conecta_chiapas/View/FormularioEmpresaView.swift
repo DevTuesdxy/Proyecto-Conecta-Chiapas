@@ -81,7 +81,6 @@ struct FormularioEmpresaView: View {
 
     }
     
-    // MARK: - Vista principal
     var body: some View {
         NavigationStack {
             

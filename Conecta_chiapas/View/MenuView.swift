@@ -4,10 +4,11 @@ import SwiftData
 struct MenuView: View {
     @Environment(SessionManager.self) var session
     @Environment(\.modelContext) private var context
+    @Environment(\.dismiss) private var dismiss
     
     @State private var selectedTab: Tab = .dashboard
     @State private var isShowingPublishSheet = false
-
+    
     @Query(sort: \Vacante.fecha, order: .reverse) private var vacantes: [Vacante]
     @Query private var postulaciones: [DetalleVacantePostulacion]
     
@@ -32,13 +33,18 @@ struct MenuView: View {
 
                 Spacer()
 
-                Button(action: {}) {
-                    Image(systemName: "line.3.horizontal")
-                        .font(.title3)
-                        .foregroundStyle(.primary)
+                //Btn Cerrar sesion
+                Button {
+                    dismiss()
+                } label: {
+                    Text("Cerrar Sesión")
+                        .font(.callout)
+                        .foregroundStyle(brandingGreen)
                         .padding(8)
-                        .background(.ultraThinMaterial, in: Circle())
+                        .background(Color(.systemGray5))
+                        .cornerRadius(12)
                 }
+
             }
             .padding(.horizontal)
             .padding(.vertical, 8)
@@ -52,7 +58,8 @@ struct MenuView: View {
                 NavigationStack {
                     ScrollView {
                         if session.usuarioActual?.tipo == .candidato {
-                            CandidateDashboardView()                        } else {
+                            CandidateDashboardView()
+                        } else {
 //                            EmpresaDashboardView()
                         }
                     }
@@ -140,7 +147,7 @@ struct MenuView: View {
 
 
                 //Candidatos
-                // 🟪 TAB: CANDIDATOS – SOLO EMPRESA
+                // Vista para empresa
                 if session.usuarioActual?.tipo == .empresa {
                     NavigationStack {
                         ScrollView {
@@ -208,7 +215,6 @@ struct MenuView: View {
                 }
             }
         }
-
         .navigationBarBackButtonHidden(true)
     }
     
@@ -333,6 +339,8 @@ private func MenuView_Preview() -> some View {
     do {
         let container = try ModelContainer.makeMercadoLaboralContainer(inMemory: true)
 
+        let session = SessionManager()
+
         let usuarioEmpresa = Usuario.comoEmpresa(
             idUsuario: 1,
             correo: "empresa@chiapas.com",
@@ -341,6 +349,8 @@ private func MenuView_Preview() -> some View {
             idEmpresa: 101,
             nombreEmpresa: "Empresa Chiapas S.A."
         )
+
+        session.usuarioActual = usuarioEmpresa
 
         container.mainContext.insert(usuarioEmpresa)
 
@@ -360,6 +370,7 @@ private func MenuView_Preview() -> some View {
         return AnyView(
             MenuView()
                 .modelContainer(container)
+                .environment(session)
         )
 
     } catch {
